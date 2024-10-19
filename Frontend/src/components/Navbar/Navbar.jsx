@@ -113,7 +113,7 @@ function Navbar() {
               {/* Profile Page */}
               <li className="relative group">
                 <NavLink
-                  to={"/profile/${authUser?.username}"}
+                  to={`/profile`}
                   className={({ isActive }) =>
                     `block py-2 px-3 transition-all duration-300 relative
                     ${isActive ? "text-purple-400" : "text-gray-300"}
@@ -141,69 +141,8 @@ function Navbar() {
               </li>
 
               {/* Programs Dropdown */}
-              <li className="relative">
-                <button
-                  onClick={() => setShowProgramsMenu(!showProgramsMenu)}
-                  onMouseEnter={() =>
-                    !isMobileMenuOpen && setShowProgramsMenu(true)
-                  }
-                  onMouseLeave={() =>
-                    !isMobileMenuOpen && setShowProgramsMenu(false)
-                  }
-                  className="w-full lg:w-auto flex items-center justify-between py-2 px-3 text-gray-300 hover:text-purple-400 transition-all duration-300"
-                >
-                  Programs
-                  <ChevronDown
-                    className={`ml-1 w-4 h-4 transform transition-transform duration-300 ${
-                      showProgramsMenu ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-
-                {showProgramsMenu && (
-                  <div
-                    onMouseEnter={() =>
-                      !isMobileMenuOpen && setShowProgramsMenu(true)
-                    }
-                    onMouseLeave={() =>
-                      !isMobileMenuOpen && setShowProgramsMenu(false)
-                    }
-                    className={`
-                      lg:absolute lg:top-full lg:left-0 bg-gray-800 shadow-xl rounded-lg py-2
-                      lg:w-48 w-full transform transition-all duration-300
-                      ${isMobileMenuOpen ? "relative" : ""}
-                    `}
-                  >
-                    {programs.map((program) => (
-                      <Link
-                        key={program}
-                        to={`/programs/${program
-                          .toLowerCase()
-                          .replace(/\s+/g, "-")}`}
-                        className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-purple-400 transition-colors duration-300"
-                      >
-                        {program}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </li>
 
               {/* Location Reviews */}
-              <li className="relative group">
-                <NavLink
-                  to="/reviews"
-                  className={({ isActive }) =>
-                    `py-2 px-3 transition-all duration-300 relative flex items-center gap-2
-                    ${isActive ? "text-purple-400" : "text-gray-300"}
-                    hover:text-purple-400`
-                  }
-                >
-                  <MapPin className="w-4 h-4" />
-                  Location Reviews
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-purple-400 transition-all duration-300 group-hover:w-full"></span>
-                </NavLink>
-              </li>
             </ul>
 
             {/* User Section */}

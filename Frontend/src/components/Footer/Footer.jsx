@@ -1,107 +1,137 @@
-import React from 'react';
-import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin } from 'lucide-react';
+import React from "react";
+import {
+  Facebook,
+  Twitter,
+  Instagram,
+  MapPin,
+  Phone,
+  Mail,
+  Globe,
+  ChevronRight,
+} from "lucide-react";
 
 const Footer = () => {
+  const quickLinks = [
+    { name: "About Us", href: "/about" },
+    { name: "Destinations", href: "/destinations" },
+  ];
+
+  const popularDestinations = [
+    { name: "Rajasthan", href: "/destinations/rajasthan" },
+    { name: "Kerala", href: "/destinations/kerala" },
+    { name: "Himachal Pradesh", href: "/destinations/himachal" },
+    { name: "Goa", href: "/destinations/goa" },
+    { name: "Ladakh", href: "/destinations/ladakh" },
+  ];
+
   return (
-    <footer className="bg-gray-900 text-gray-300">
-      {/* Main Footer Content */}
-      <div className="container mx-auto px-4 py-8">
+    <footer className="bg-gradient-to-b bg-gray-900 text-white">
+      <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* About Section */}
+          {/* Company Info */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-white">Tripvana</h3>
-            <p className="text-sm">
-              Your trusted companion for discovering and booking unforgettable travel experiences around the world.
+            <h3 className="text-2xl font-bold mb-4">Yatra Sahayak</h3>
+            <p className="text-gray-300 text-sm leading-relaxed">
+              Your trusted travel companion for exploring the diverse beauty and
+              culture of India. Let us help you create unforgettable memories.
             </p>
-            <div className="flex space-x-4">
-              <a href="#" className="hover:text-white transition-colors">
+            <div className="flex space-x-4 pt-4">
+              <a href="#" className="hover:text-blue-400 transition-colors">
                 <Facebook size={20} />
               </a>
-              <a href="#" className="hover:text-white transition-colors">
+              <a href="#" className="hover:text-blue-400 transition-colors">
                 <Twitter size={20} />
               </a>
-              <a href="#" className="hover:text-white transition-colors">
+              <a href="#" className="hover:text-blue-400 transition-colors">
                 <Instagram size={20} />
-              </a>
-              <a href="#" className="hover:text-white transition-colors">
-                <Youtube size={20} />
               </a>
             </div>
           </div>
 
           {/* Quick Links */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold text-white">Quick Links</h3>
+          <div>
+            <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              <li>
-                <a href="#" className="hover:text-white transition-colors">About Us</a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">Destinations</a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">Tour Packages</a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">Travel Blog</a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">Contact Us</a>
-              </li>
+              {quickLinks.map((link, index) => (
+                <li key={index}>
+                  <a
+                    href={link.href}
+                    className="text-gray-300 hover:text-white transition-colors flex items-center"
+                  >
+                    <ChevronRight size={16} className="mr-2" />
+                    {link.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Popular Destinations */}
+          <div>
+            <h3 className="text-xl font-semibold mb-4">Popular Destinations</h3>
+            <ul className="space-y-2">
+              {popularDestinations.map((destination, index) => (
+                <li key={index}>
+                  <a
+                    href={destination.href}
+                    className="text-gray-300 hover:text-white transition-colors flex items-center"
+                  >
+                    <ChevronRight size={16} className="mr-2" />
+                    {destination.name}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Contact Info */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold text-white">Contact Us</h3>
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Mail size={16} />
-                <span>support@tripvana.com</span>
+          <div>
+            <h3 className="text-xl font-semibold mb-4">Contact Us</h3>
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3">
+                <MapPin size={20} className="text-blue-400" />
+                <span className="text-gray-300">
+                  Mumbai, Maharashtra, India
+                </span>
               </div>
-              <div className="flex items-center space-x-2">
-                <Phone size={16} />
-                <span>+1 (555) 123-4567</span>
+              <div className="flex items-center space-x-3">
+                <Phone size={20} className="text-blue-400" />
+                <span className="text-gray-300">+91 1234567890</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <MapPin size={16} />
-                <span>123 Travel Street, Adventure City, AC 12345</span>
+              <div className="flex items-center space-x-3">
+                <Mail size={20} className="text-blue-400" />
+                <span className="text-gray-300">info@yatrasahayak.com</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Globe size={20} className="text-blue-400" />
+                <span className="text-gray-300">www.yatrasahayak.com</span>
               </div>
             </div>
           </div>
-
-          {/* Newsletter */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold text-white">Newsletter</h3>
-            <p className="text-sm">Subscribe to get special offers and travel updates!</p>
-            <form className="space-y-2">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="w-full px-4 py-2 bg-gray-800 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <button
-                type="submit"
-                className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
-              >
-                Subscribe
-              </button>
-            </form>
-          </div>
         </div>
-      </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-gray-800">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className="text-sm">
-              &copy; {new Date().getFullYear()} Tripvana. All rights reserved.
+        {/* Bottom Bar */}
+        <div className="border-t border-gray-700 mt-12 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <p className="text-gray-400 text-sm">
+              © {new Date().getFullYear()} Yatra Sahayak. All rights reserved.
             </p>
-            <div className="flex space-x-4 text-sm">
-              <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-white transition-colors">Cookie Policy</a>
+            <div className="flex space-x-6 mt-4 md:mt-0">
+              <a
+                href="/privacy"
+                className="text-gray-400 hover:text-white text-sm"
+              >
+                Privacy Policy
+              </a>
+              <a
+                href="/terms"
+                className="text-gray-400 hover:text-white text-sm"
+              >
+                Terms of Service
+              </a>
+              <a href="/faq" className="text-gray-400 hover:text-white text-sm">
+                FAQ
+              </a>
             </div>
           </div>
         </div>
