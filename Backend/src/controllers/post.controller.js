@@ -1,5 +1,5 @@
 import Post from "../models/post.model.js";
-import User from "../models/user.model.js";
+import {User} from "../models/user.model.js";
 import { v2 as cloudinary } from "cloudinary";
 
 const createPost = async (req, res) => {
@@ -173,8 +173,7 @@ const getUserPosts = async (req, res) => {
     }
 };
 
-// Export all the controllers using default export
-export default {
+export {
     createPost,
     deletePost,
     commentOnPost,
