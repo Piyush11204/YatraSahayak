@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Carousel from "../../components/Carousel/Carousel";
+import TravelShowcase from "../../components/PopularCities/TravelShowcase";
 
 import {
   Users,
@@ -158,6 +159,9 @@ const Home = () => {
           </div>
         </div>
       </div>
+
+      {/* popular cities with season filter*/}
+      <TravelShowcase />
 
       {/* Categories Section */}
       <section className="max-w-7xl mx-auto px-4 py-16">

@@ -16,9 +16,7 @@ import Login from "./components/Auth/Login/Login.jsx";
 import Signup from "./components/Auth/Signup/Signup.jsx";
 import Home from "./Pages/Home/Home.jsx";
 import Hotels from "./Pages/SubSections/Hotels.jsx";
-import ProfilePage from "./Pages/Profile/ProfilePage.jsx";
-
-const queryClient = new QueryClient();
+import ProfilePage from "./Pages/Profile/UserProfile.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -44,9 +42,8 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
+    <App />
+
     <RouterProvider router={router} />
   </React.StrictMode>
 );
