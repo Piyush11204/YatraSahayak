@@ -1,6 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Users, Heart, Trophy, Globe, ArrowRight, CheckCircle, Star, Plane, MapPin, Sun, Compass } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import Carousel from "../../components/Carousel/Carousel";
+
+import {
+  Users,
+  Heart,
+  Trophy,
+  Globe,
+  ArrowRight,
+  CheckCircle,
+  Star,
+  Plane,
+  MapPin,
+  Sun,
+  Compass,
+} from "lucide-react";
 
 const Home = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -8,13 +22,25 @@ const Home = () => {
   const heroImages = [
     "/api/placeholder/1920/1080",
     "/api/placeholder/1920/1080",
-    "/api/placeholder/1920/1080"
+    "/api/placeholder/1920/1080",
   ];
 
   const stats = [
-    { icon: <Users className="w-8 h-8" />, count: "100+", label: "Travel Partners" },
-    { icon: <Heart className="w-8 h-8" />, count: "20K+", label: "Happy Travelers" },
-    { icon: <Trophy className="w-8 h-8" />, count: "200+", label: "Tours Organized" },
+    {
+      icon: <Users className="w-8 h-8" />,
+      count: "100+",
+      label: "Travel Partners",
+    },
+    {
+      icon: <Heart className="w-8 h-8" />,
+      count: "20K+",
+      label: "Happy Travelers",
+    },
+    {
+      icon: <Trophy className="w-8 h-8" />,
+      count: "200+",
+      label: "Tours Organized",
+    },
     { icon: <Globe className="w-8 h-8" />, count: "50+", label: "Countries" },
   ];
 
@@ -30,7 +56,7 @@ const Home = () => {
     { icon: Sun, title: "Beach Getaways", count: 45 },
     { icon: Compass, title: "Adventure Tours", count: 32 },
     { icon: Heart, title: "Romantic Escapes", count: 28 },
-    { icon: Globe, title: "Cultural Tours", count: 56 }
+    { icon: Globe, title: "Cultural Tours", count: 56 },
   ];
 
   useEffect(() => {
@@ -42,6 +68,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800">
+      <Carousel />
       {/* Hero Section */}
       <section className="relative h-screen bg-indigo-900 overflow-hidden">
         <div className="absolute inset-0 transition-opacity duration-1000">
@@ -53,7 +80,7 @@ const Home = () => {
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-indigo-900/50" />
         <div className="relative z-10 h-full flex items-center justify-center">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -66,7 +93,8 @@ const Home = () => {
               Your Journey Begins Here
             </h1>
             <p className="text-xl text-indigo-100 mb-8 max-w-2xl mx-auto">
-              Discover extraordinary destinations and create unforgettable memories with Tripvana
+              Discover extraordinary destinations and create unforgettable
+              memories with Tripvana
             </p>
             <div className="flex justify-center gap-4">
               <button className="bg-indigo-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-indigo-700 transition-colors duration-300 animate-pulse">
@@ -148,8 +176,12 @@ const Home = () => {
               <div className="inline-block p-4 rounded-full bg-indigo-50 group-hover:bg-indigo-100 transition-colors duration-300">
                 <category.icon className="w-8 h-8 text-indigo-600" />
               </div>
-              <h3 className="mt-4 text-lg font-semibold text-gray-800 group-hover:text-indigo-600">{category.title}</h3>
-              <p className="mt-2 text-sm text-gray-500">{category.count} destinations</p>
+              <h3 className="mt-4 text-lg font-semibold text-gray-800 group-hover:text-indigo-600">
+                {category.title}
+              </h3>
+              <p className="mt-2 text-sm text-gray-500">
+                {category.count} destinations
+              </p>
             </motion.div>
           ))}
         </div>
@@ -163,9 +195,12 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl font-bold mb-6 text-white">Ready to Explore the World?</h2>
+            <h2 className="text-4xl font-bold mb-6 text-white">
+              Ready to Explore the World?
+            </h2>
             <p className="text-xl text-indigo-200 mb-8">
-              Join Tripvana today and embark on unforgettable journeys, one adventure at a time.
+              Join Tripvana today and embark on unforgettable journeys, one
+              adventure at a time.
             </p>
             <button className="px-8 py-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition-all duration-300 transform hover:scale-105">
               Start Your Journey
@@ -176,12 +211,20 @@ const Home = () => {
 
       <style jsx>{`
         @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-100%); }
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-100%);
+          }
         }
         @keyframes marquee2 {
-          0% { transform: translateX(100%); }
-          100% { transform: translateX(0); }
+          0% {
+            transform: translateX(100%);
+          }
+          100% {
+            transform: translateX(0);
+          }
         }
         .animate-marquee {
           animation: marquee 20s linear infinite;

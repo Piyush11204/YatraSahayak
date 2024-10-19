@@ -1,7 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { UserContext } from "../../../context/userContext.jsx";
-import { ChevronDown, User, LogOut, Settings, MapPin, Menu, X } from 'lucide-react';
+import {
+  ChevronDown,
+  User,
+  LogOut,
+  Settings,
+  MapPin,
+  Menu,
+  X,
+} from "lucide-react";
 
 function Navbar() {
   const { user, logout } = useContext(UserContext);
@@ -14,7 +22,7 @@ function Navbar() {
     "Hotels",
     "Domestic Trips",
     "International Trips",
-    "Special Events"
+    "Special Events",
   ];
 
   // Close mobile menu when route changes
@@ -32,20 +40,20 @@ function Navbar() {
       }
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   // Handle click outside dropdown
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (!event.target.closest('.user-dropdown')) {
+      if (!event.target.closest(".user-dropdown")) {
         setShowDropdown(false);
       }
     };
 
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
   return (
@@ -54,8 +62,8 @@ function Navbar() {
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
           {/* Logo and Mobile Menu Button */}
           <div className="flex items-center justify-between w-full lg:w-auto">
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="flex items-center transition-transform duration-300 hover:scale-105"
             >
               <img
@@ -79,11 +87,13 @@ function Navbar() {
           </div>
 
           {/* Navigation Links - Desktop & Mobile */}
-          <div className={`
+          <div
+            className={`
             lg:flex lg:items-center lg:w-auto w-full
-            ${isMobileMenuOpen ? 'block' : 'hidden'}
+            ${isMobileMenuOpen ? "block" : "hidden"}
             transition-all duration-300 ease-in-out
-          `}>
+          `}
+          >
             <ul className="flex flex-col lg:flex-row lg:space-x-8 lg:mt-0 mt-4">
               {/* Home Link */}
               <li className="relative group">
@@ -96,6 +106,21 @@ function Navbar() {
                   }
                 >
                   Home
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-purple-400 transition-all duration-300 group-hover:w-full"></span>
+                </NavLink>
+              </li>
+
+              {/* Profile Page */}
+              <li className="relative group">
+                <NavLink
+                  to={"/profile/${authUser?.username}"}
+                  className={({ isActive }) =>
+                    `block py-2 px-3 transition-all duration-300 relative
+                    ${isActive ? "text-purple-400" : "text-gray-300"}
+                    hover:text-purple-400`
+                  }
+                >
+                  Profile
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-purple-400 transition-all duration-300 group-hover:w-full"></span>
                 </NavLink>
               </li>
@@ -119,28 +144,42 @@ function Navbar() {
               <li className="relative">
                 <button
                   onClick={() => setShowProgramsMenu(!showProgramsMenu)}
-                  onMouseEnter={() => !isMobileMenuOpen && setShowProgramsMenu(true)}
-                  onMouseLeave={() => !isMobileMenuOpen && setShowProgramsMenu(false)}
+                  onMouseEnter={() =>
+                    !isMobileMenuOpen && setShowProgramsMenu(true)
+                  }
+                  onMouseLeave={() =>
+                    !isMobileMenuOpen && setShowProgramsMenu(false)
+                  }
                   className="w-full lg:w-auto flex items-center justify-between py-2 px-3 text-gray-300 hover:text-purple-400 transition-all duration-300"
                 >
                   Programs
-                  <ChevronDown className={`ml-1 w-4 h-4 transform transition-transform duration-300 ${showProgramsMenu ? 'rotate-180' : ''}`} />
+                  <ChevronDown
+                    className={`ml-1 w-4 h-4 transform transition-transform duration-300 ${
+                      showProgramsMenu ? "rotate-180" : ""
+                    }`}
+                  />
                 </button>
-                
+
                 {showProgramsMenu && (
                   <div
-                    onMouseEnter={() => !isMobileMenuOpen && setShowProgramsMenu(true)}
-                    onMouseLeave={() => !isMobileMenuOpen && setShowProgramsMenu(false)}
+                    onMouseEnter={() =>
+                      !isMobileMenuOpen && setShowProgramsMenu(true)
+                    }
+                    onMouseLeave={() =>
+                      !isMobileMenuOpen && setShowProgramsMenu(false)
+                    }
                     className={`
                       lg:absolute lg:top-full lg:left-0 bg-gray-800 shadow-xl rounded-lg py-2
                       lg:w-48 w-full transform transition-all duration-300
-                      ${isMobileMenuOpen ? 'relative' : ''}
+                      ${isMobileMenuOpen ? "relative" : ""}
                     `}
                   >
                     {programs.map((program) => (
                       <Link
                         key={program}
-                        to={`/programs/${program.toLowerCase().replace(/\s+/g, '-')}`}
+                        to={`/programs/${program
+                          .toLowerCase()
+                          .replace(/\s+/g, "-")}`}
                         className="block px-4 py-2 text-gray-300 hover:bg-gray-700 hover:text-purple-400 transition-colors duration-300"
                       >
                         {program}
@@ -179,17 +218,25 @@ function Navbar() {
                       {user.fullname[0].toUpperCase()}
                     </div>
                     <span className="text-gray-300">{user.fullname}</span>
-                    <ChevronDown className={`w-4 h-4 text-gray-300 transform transition-transform duration-300 ${showDropdown ? 'rotate-180' : ''}`} />
+                    <ChevronDown
+                      className={`w-4 h-4 text-gray-300 transform transition-transform duration-300 ${
+                        showDropdown ? "rotate-180" : ""
+                      }`}
+                    />
                   </button>
 
                   {showDropdown && (
-                    <div className={`
+                    <div
+                      className={`
                       lg:absolute lg:right-0 lg:mt-2 w-full lg:w-56 bg-gray-800 rounded-lg shadow-xl py-2
                       transform transition-all duration-300
-                      ${isMobileMenuOpen ? 'relative mt-2' : ''}
-                    `}>
+                      ${isMobileMenuOpen ? "relative mt-2" : ""}
+                    `}
+                    >
                       <div className="px-4 py-2 border-b border-gray-700">
-                        <p className="text-sm font-medium text-gray-200">{user.fullname}</p>
+                        <p className="text-sm font-medium text-gray-200">
+                          {user.fullname}
+                        </p>
                         <p className="text-sm text-gray-400">{user.email}</p>
                       </div>
                       <Link
