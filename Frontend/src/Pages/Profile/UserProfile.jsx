@@ -1,20 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Camera, MapPin, Globe, Send, X, Edit3 } from "lucide-react";
+import axios from "axios";
+import { UserContext } from "../../../context/userContext";
 
-const UserProfile = ({ initialUsername = "TravelLover123" }) => {
+const UserProfile = () => {
   const [posts, setPosts] = useState([]);
   const [newPost, setNewPost] = useState({
     location: "",
-    destination: "",
-    images: [],
-    categories: [],
-    caption: "",
-    bestSeason: "",
+    placeName: "",
+    text: "",
+    img: [],
+    category: "",
+    bestSeasonToVisit: "",
   });
   const [profileImage, setProfileImage] = useState("/api/placeholder/150/150");
-  const [username, setUsername] = useState(initialUsername);
   const [isEditing, setIsEditing] = useState(false);
-
+  const { user } = useContext(UserContext);
   const categories = [
     "Beach",
     "Waterfall",
@@ -22,20 +23,31 @@ const UserProfile = ({ initialUsername = "TravelLover123" }) => {
     "Historical",
     "Peaks",
     "Mountains",
+    "Adventure",
   ];
   const seasons = ["Spring", "Summer", "Autumn", "Winter", "Rainy"];
 
-  const handlePost = () => {
-    if (newPost.location && newPost.destination && newPost.images.length > 0) {
+  const handlePost = async () => {
+    console.log("Submitting post:", newPost);
+    try {
+      const response = await axios.post("http://localhost:8000/posts/create", newPost, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Post created successfully:", response.data);
       setPosts([{ ...newPost, timestamp: new Date().toISOString() }, ...posts]);
       setNewPost({
         location: "",
-        destination: "",
-        images: [],
-        categories: [],
-        caption: "",
-        bestSeason: "",
+        placeName: "",
+        text: "",
+        img: [],
+        category: "",
+        bestSeasonToVisit: "",
       });
+    } catch (error) {
+      console.error("Error creating post:", error);
+      alert("There was an error creating the post. Please try again.");
     }
   };
 
@@ -44,16 +56,14 @@ const UserProfile = ({ initialUsername = "TravelLover123" }) => {
     const imageUrls = files.map((file) => URL.createObjectURL(file));
     setNewPost((prevPost) => ({
       ...prevPost,
-      images: [...prevPost.images, ...imageUrls],
-      categories: [...prevPost.categories, ...new Array(files.length).fill("")],
+      img: [...prevPost.img, ...imageUrls],
     }));
   };
 
   const removeImage = (index) => {
     setNewPost((prevPost) => ({
       ...prevPost,
-      images: prevPost.images.filter((_, i) => i !== index),
-      categories: prevPost.categories.filter((_, i) => i !== index),
+      img: prevPost.img.filter((_, i) => i !== index),
     }));
   };
 
@@ -71,6 +81,10 @@ const UserProfile = ({ initialUsername = "TravelLover123" }) => {
   const handleUpdateProfile = () => {
     setIsEditing(false);
   };
+
+  // Extract username and profile image from user context
+  const username = user ? user.username : "Guest"; // Fallback to "Guest" if user is not logged in
+  const userProfileImage = user ? user.profileImage : "/api/placeholder/150/150"; // Adjust to your API response structure
 
   return (
     <div className="bg-gradient-to-b from-indigo-900 to-indigo-800 min-h-screen text-white">
@@ -102,7 +116,7 @@ const UserProfile = ({ initialUsername = "TravelLover123" }) => {
               <input
                 type="text"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => setUsername(e.target.value)} // This doesn't change the username in UserContext
                 className="bg-transparent border-b-2 border-white text-white text-xl font-bold focus:outline-none"
               />
             ) : (
@@ -136,10 +150,18 @@ const UserProfile = ({ initialUsername = "TravelLover123" }) => {
             />
             <input
               type="text"
-              placeholder="Destination"
-              value={newPost.destination}
+              placeholder="Place Name"
+              value={newPost.placeName}
               onChange={(e) =>
-                setNewPost({ ...newPost, destination: e.target.value })
+                setNewPost({ ...newPost, placeName: e.target.value })
+              }
+              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-indigo-400"
+            />
+            <textarea
+              placeholder="Text about the destination"
+              value={newPost.text}
+              onChange={(e) =>
+                setNewPost({ ...newPost, text: e.target.value })
               }
               className="w-full p-2 border rounded-md focus:ring-2 focus:ring-indigo-400"
             />
@@ -160,29 +182,13 @@ const UserProfile = ({ initialUsername = "TravelLover123" }) => {
               />
             </label>
             <div className="flex flex-col gap-2">
-              {newPost.images.map((img, index) => (
+              {newPost.img.map((img, index) => (
                 <div key={index} className="relative flex flex-col items-start">
                   <img
                     src={img}
                     alt={`Upload ${index + 1}`}
                     className="w-full h-48 object-cover rounded-md"
                   />
-                  <select
-                    value={newPost.categories[index]}
-                    onChange={(e) => {
-                      const updatedCategories = [...newPost.categories];
-                      updatedCategories[index] = e.target.value;
-                      setNewPost({ ...newPost, categories: updatedCategories });
-                    }}
-                    className="border rounded-md mt-1 w-full"
-                  >
-                    <option value="">Select Category</option>
-                    {categories.map((category) => (
-                      <option key={category} value={category}>
-                        {category}
-                      </option>
-                    ))}
-                  </select>
                   <button
                     onClick={() => removeImage(index)}
                     className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
@@ -192,19 +198,24 @@ const UserProfile = ({ initialUsername = "TravelLover123" }) => {
                 </div>
               ))}
             </div>
-            <input
-              type="text"
-              placeholder="Caption for all images"
-              value={newPost.caption}
+            <select
+              value={newPost.category}
               onChange={(e) =>
-                setNewPost({ ...newPost, caption: e.target.value })
+                setNewPost({ ...newPost, category: e.target.value })
               }
               className="w-full p-2 border rounded-md focus:ring-2 focus:ring-indigo-400"
-            />
+            >
+              <option value="">Select Category</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
             <select
-              value={newPost.bestSeason}
+              value={newPost.bestSeasonToVisit}
               onChange={(e) =>
-                setNewPost({ ...newPost, bestSeason: e.target.value })
+                setNewPost({ ...newPost, bestSeasonToVisit: e.target.value })
               }
               className="w-full p-2 border rounded-md focus:ring-2 focus:ring-indigo-400"
             >
@@ -219,47 +230,11 @@ const UserProfile = ({ initialUsername = "TravelLover123" }) => {
               onClick={handlePost}
               className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white py-2 rounded-md hover:from-indigo-600 hover:to-purple-600 transition duration-300 flex items-center justify-center"
             >
-              <Send className="w-4 h-4 mr-2" /> Post
+              <Send className="w-4 h-4 mr-2" />
+              Post
             </button>
           </div>
         </div>
-
-        {posts.map((post, index) => (
-          <div
-            key={index}
-            className="bg-white rounded-lg shadow-lg p-6 mb-6 text-gray-800"
-          >
-            <div className="flex items-center mb-4">
-              <img
-                src={profileImage}
-                alt={username}
-                className="w-10 h-10 rounded-full mr-3"
-              />
-              <div>
-                <h4 className="font-bold">{username}</h4>
-                <div className="text-sm text-gray-500 flex items-center">
-                  <MapPin className="w-4 h-4 mr-1" /> {post.location} •
-                  <Globe className="w-4 h-4 mx-1" /> {post.bestSeason}
-                </div>
-              </div>
-            </div>
-            <h3 className="text-lg font-semibold">{post.destination}</h3>
-            <p className="mt-2">{post.caption}</p>
-            <div className="flex gap-2 mt-4">
-              {post.images.map((img, imgIndex) => (
-                <img
-                  key={imgIndex}
-                  src={img}
-                  alt={`Post ${imgIndex + 1}`}
-                  className="w-1/3 h-32 object-cover rounded-md"
-                />
-              ))}
-            </div>
-            <p className="text-sm text-gray-500 mt-2">
-              {new Date(post.timestamp).toLocaleString()}
-            </p>
-          </div>
-        ))}
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ import {
 import Post from "../models/post.model.js";
 import multer from "multer";
 import path from "path";
+import  {verifyJWT}  from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 

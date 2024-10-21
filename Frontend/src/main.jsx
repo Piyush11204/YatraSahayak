@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./App.jsx";
 import "./index.css";
 import {
@@ -17,6 +16,7 @@ import Signup from "./components/Auth/Signup/Signup.jsx";
 import Home from "./Pages/Home/Home.jsx";
 import Hotels from "./Pages/SubSections/Hotels.jsx";
 import ProfilePage from "./Pages/Profile/UserProfile.jsx";
+import AllPosts from "./Pages/SubSections/AllPosts.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,6 +26,8 @@ const router = createBrowserRouter(
 
       <Route path="profile" element={<ProfilePage />} />
       <Route path="about" element={<About />} />
+      <Route path="" element={<AllPosts  />} />
+
       {/* <Route path='user/' element={<User />}>
         <Route path=':userid' element={<User />} />
       </Route> */}

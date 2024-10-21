@@ -32,7 +32,7 @@ const About = () => {
             className="text-center"
           >
             <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-300">
-              About Tripvana
+              About YatraSahayak
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Your gateway to unforgettable travel experiences, connecting you to the world's best destinations for both international and domestic trips.
@@ -122,10 +122,10 @@ const About = () => {
                 Our Mission
               </h2>
               <p className="text-gray-300 mb-6">
-                At Tripvana, we aim to make travel accessible and effortless, whether you're exploring exotic international destinations or hidden domestic gems.
+                At YatraSahayak, we aim to make travel accessible and effortless, whether you're exploring exotic international destinations or hidden domestic gems.
               </p>
               <ul className="space-y-4">
-                {[
+                {[ 
                   "Connecting travelers with unique experiences",
                   "Simplifying trip planning and bookings",
                   "Building a community of travel enthusiasts",
@@ -151,15 +151,15 @@ const About = () => {
               className="relative"
             >
               <div className="aspect-video rounded-xl overflow-hidden">
-              <iframe
-  src="https://www.google.com/maps?q=Tripvana&output=embed"
-  width="600"
-  height="450"
-  style={{ border: 0 }}
-  allowFullScreen=""
-  loading="lazy"
-  referrerPolicy="no-referrer-when-downgrade"
-></iframe>
+                <iframe
+                  src="https://www.google.com/maps?q=YatraSahayak&output=embed"
+                  width="600"
+                  height="450"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
                 <div className="absolute inset-0 bg-purple-900/30 rounded-xl" />
               </div>
             </motion.div>
@@ -177,7 +177,7 @@ const About = () => {
           >
             <h2 className="text-4xl font-bold mb-6">Ready to Explore the World?</h2>
             <p className="text-xl text-gray-300 mb-8">
-              Join Tripvana today and embark on unforgettable journeys, one adventure at a time.
+              Join YatraSahayak today and embark on unforgettable journeys, one adventure at a time.
             </p>
             <button className="px-8 py-4 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition-all duration-300 transform hover:scale-105">
               Start Your Journey

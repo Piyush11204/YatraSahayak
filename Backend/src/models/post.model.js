@@ -5,7 +5,7 @@ const postSchema = new mongoose.Schema(
 		user: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "User",
-			required: true,
+			// required: true,
 		},
 		text: {
 			type: String,
@@ -16,16 +16,19 @@ const postSchema = new mongoose.Schema(
 		},
 		img: {
 			type: [String],
-			required: true,
+			// required: true,
 		},
 		placeName: {
-			type: String, required: true
+			type: String, 
+			// required: true
 		},   // New field
 		location: {
-			type: String, required: true
+			type: String, 
+			// required: true
 		},    // New field
 		bestSeasonToVisit: {
-			type: String, required: true
+			type: String, 
+			// required: true
 		},  // New field
 		
  // Adds createdAt and updatedAt fields

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Carousel from "../../components/Carousel/Carousel";
-import TravelShowcase from "../../components/PopularCities/TravelShowcase";
+// import TravelShowcase from "../../components/PopularCities/TravelShowcase";
 
 import {
   Users,
@@ -16,6 +16,7 @@ import {
   Sun,
   Compass,
 } from "lucide-react";
+import AllPosts from "../SubSections/AllPosts";
 
 const Home = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -136,7 +137,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-
+            
       {/* Stats Section */}
       <div className="py-20 bg-gradient-to-b from-indigo-900 to-indigo-800">
         <div className="max-w-7xl mx-auto px-4">
@@ -161,7 +162,8 @@ const Home = () => {
       </div>
 
       {/* popular cities with season filter*/}
-      <TravelShowcase />
+      <AllPosts />
+      {/* <TravelShowcase /> */}
 
       {/* Categories Section */}
       <section className="max-w-7xl mx-auto px-4 py-16">

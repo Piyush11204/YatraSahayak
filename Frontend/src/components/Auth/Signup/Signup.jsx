@@ -33,7 +33,7 @@ function Signup() {
         password,
       });
       localStorage.setItem("accessToken", res.data);
-      window.location = "/";
+      // window.location = "/";
       toast.success("User registered successfully!");
       navigate("/login");
     } catch (err) {
