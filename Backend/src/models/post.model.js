@@ -12,7 +12,7 @@ const postSchema = new mongoose.Schema(
         },
         catagory: {
             type: String,
-            required: true,
+            // required: true,
 		},
 		img: {
 			type: [String],

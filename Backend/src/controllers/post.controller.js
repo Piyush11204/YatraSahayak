@@ -3,87 +3,69 @@ import {User} from "../models/user.model.js";
 import { v2 as cloudinary } from "cloudinary";
 
 const createPost = async (req, res) => {
-//     try {
-//         // User authentication logic can be uncommented if needed
-//         // if (!req.user) {
-//         //     return res.status(401).json({ error: "User not authenticated" });
-//         // }
+    try {
+        // User authentication logic can be uncommented if needed
+        // if (!req.user) {
+        //     return res.status(401).json({ error: "User not authenticated" });
+        // }
 
-//         const { text, placeName, location, bestSeasonToVisit, category } = req.body;
-//         let { img } = req.body; // Expecting img to be an array of image URLs
+        const { text, placeName, location, bestSeasonToVisit, category } = req.body;
+        let { img } = req.body; // Expecting img to be an array of image URLs
 
-//         // Uncomment if user authentication is required
-//         // const userId = req.user._id;
-//         // const user = await User.findById(userId);
-//         // if (!user) return res.status(404).json({ message: "User not found" });
+        // Uncomment if user authentication is required
+        // const userId = req.user._id;
+        // const user = await User.findById(userId);
+        // if (!user) return res.status(404).json({ message: "User not found" });
 
-//         // Validate required fields
-//         if (!placeName || !location || !bestSeasonToVisit || !category) {
-//             return res.status(400).json({
-//                 error: "Place name, location, best season to visit, and category are required",
-//             });
-//         }
+        // Validate required fields
+        if (!placeName || !location || !bestSeasonToVisit || !category) {
+            return res.status(400).json({
+                error: "Place name, location, best season to visit, and category are required",
+            });
+        }
 
-//         // Ensure there is text or at least one image
-//         if (!text && !img) {
-//             return res.status(400).json({ error: "Post must have text or an image" });
-//         }
+        // Ensure there is text or at least one image
+        if (!text && !img) {
+            return res.status(400).json({ error: "Post must have text or an image" });
+        }
 
-//         // Handle image uploads
-//         if (img && Array.isArray(img)) {
-//             // If img is an array, handle multiple uploads
-//             const uploadPromises = img.map(async (image) => {
-//                 // Assuming the image is a URL; modify this line if images are file uploads
-//                 const uploadedResponse = await cloudinary.uploader.upload(image);
-//                 return uploadedResponse.secure_url; // Return the uploaded image URL
-//             });
-//             img = await Promise.all(uploadPromises); // Wait for all uploads to complete
-//             console.log("Images uploaded successfully:", img);
-//         } else if (img) {
-//             // Handle single image if not an array
-//             const uploadedResponse = await cloudinary.uploader.upload(img);
-//             img = [uploadedResponse.secure_url]; // Wrap single image URL in an array
-//             console.log("Image uploaded successfully:", img);
-//         }
+        // Handle image uploads
+        if (img && Array.isArray(img)) {
+            // If img is an array, handle multiple uploads
+            const uploadPromises = img.map(async (image) => {
+                // Assuming the image is a URL; modify this line if images are file uploads
+                const uploadedResponse = await cloudinary.uploader.upload(image);
+                return uploadedResponse.secure_url; // Return the uploaded image URL
+            });
+            img = await Promise.all(uploadPromises); // Wait for all uploads to complete
+            console.log("Images uploaded successfully:", img);
+        } else if (img) {
+            // Handle single image if not an array
+            const uploadedResponse = await cloudinary.uploader.upload(img);
+            img = [uploadedResponse.secure_url]; // Wrap single image URL in an array
+            console.log("Image uploaded successfully:", img);
+        }
 
-//         // Create a new post
-//         const newPost = new Post({
-//             // user: userId, // Uncomment if user association is needed
-//             text,
-//             img, // This will now be an array of image URLs
-//             placeName,
-//             location,
-//             bestSeasonToVisit,
-//             category,
-//         });
+        // Create a new post
+        const newPost = new Post({
+            // user: userId, // Uncomment if user association is needed
+            text,
+            img, // This will now be an array of image URLs
+            placeName,
+            location,
+            bestSeasonToVisit,
+            category,
+        });
 
-//         // Save the post to the database
-//         await newPost.save();
-//         res.status(201).json(newPost);
-//     } catch (error) {
-//         console.error("Error in createPost controller:", error);
-//         res.status(500).json({ error: "Internal server error" });
-//     }
-// };
-try {
-    console.log("Received post data:", req.body);
-    const { text, placeName, location, bestSeasonToVisit, category, img } = req.body;
-
-    // Validation example
-    if (!text || !placeName || !location || !bestSeasonToVisit || !category || !img.length) {
-      return res.status(400).json({ message: "All fields are required" });
+        // Save the post to the database
+        await newPost.save();
+        res.status(201).json(newPost);
+    } catch (error) {
+        console.error("Error in createPost controller:", error);
+        res.status(500).json({ error: "Internal server error" });
     }
-
-    // Assuming you're using a database model called `Post`
-    const newPost = new Post({ text, placeName, location, bestSeasonToVisit, category, img });
-    await newPost.save();
-
-    res.status(201).json({ message: "Post created successfully", post: newPost });
-  } catch (error) {
-    console.error("Error creating post:", error);
-    res.status(500).json({ message: "Internal Server Error", error: error.message });
-  }
 };
+
 
 export default createPost;
 

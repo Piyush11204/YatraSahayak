@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { MapPin, Calendar, X, ChevronLeft, ChevronRight } from "lucide-react";
-import Itinerary from '../Itinerary/Itinerary'; // Adjusted import path
-import useItineraryStore from '../Itinerary/ItineraryService'; // Adjusted import path
-import { UserContext } from "../../../context/userContext"; // Correct usage of UserContext
+import Itinerary from '../Itinerary/Itinerary';
+import useItineraryStore from '../Itinerary/ItineraryService';
+import { UserContext } from "../../../context/userContext";
 
 const AllPosts = () => {
   const [posts, setPosts] = useState([]);
@@ -12,10 +12,8 @@ const AllPosts = () => {
   const [selectedSeason, setSelectedSeason] = useState("");
   const [selectedPost, setSelectedPost] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const user = useContext(UserContext); // Access user context
-
-  // Get addToItinerary function from the store
-  const addToItinerary = useItineraryStore(state => state.addToItinerary);
+  const { user } = useContext(UserContext);
+  const { addToItinerary } = useItineraryStore();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -178,6 +176,7 @@ const AllPosts = () => {
           </div>
         </div>
       )}
+      {user && <Itinerary userId={user.id} />}
     </div>
   );
 };
