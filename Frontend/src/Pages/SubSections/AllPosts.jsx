@@ -34,13 +34,13 @@ const AllPosts = () => {
   const seasons = [...new Set(posts.map(post => post.bestSeasonToVisit))];
   const filteredPosts = posts
     .filter(post => selectedSeason ? new RegExp(selectedSeason, "i").test(post.bestSeasonToVisit) : true)
-    .filter(post => 
-      searchTerm ? 
+    .filter(post =>
+      searchTerm ?
         post.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         post.placeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         post.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
         post.location.toLowerCase().includes(searchTerm.toLowerCase())
-      : true
+        : true
     );
 
   const handleAddToItinerary = (post) => {
@@ -114,7 +114,7 @@ const AllPosts = () => {
             <select
               value={selectedSeason}
               onChange={(e) => setSelectedSeason(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 text-white appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 rounded-lg bg-indigo-700 backdrop-blur-md border border-white/20 text-white appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
               <option value="">All Seasons</option>
               {seasons.map((season) => (
@@ -129,9 +129,9 @@ const AllPosts = () => {
           {filteredPosts.map((post) => (
             <div key={post._id} className="bg-white/10 backdrop-blur-md rounded-xl overflow-hidden border border-white/20 transform hover:scale-[1.02] transition-all duration-300">
               <div className="relative group">
-                <img 
-                  src={post.img[0]} 
-                  alt={post.placeName} 
+                <img
+                  src={post.img[0]}
+                  alt={post.placeName}
                   className="w-full h-56 object-cover"
                 />
                 <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity" />
@@ -143,6 +143,10 @@ const AllPosts = () => {
                   <div className="flex items-center text-gray-300">
                     <MapPin className="mr-1 h-4 w-4" />
                     <span className="text-sm">{post.location}</span>
+                    <div className="flex items-center text-gray-300">
+                      <span className="text-sm">Posted by: {post.username}</span>
+                    </div>
+                    {/* <span className="text-sm">{post.username}</span> */}
                   </div>
                   <div className="flex items-center text-gray-300">
                     <Calendar className="mr-1 h-4 w-4" />
@@ -172,8 +176,8 @@ const AllPosts = () => {
         {selectedPost && (
           <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50 p-4">
             <div className="bg-white rounded-xl overflow-hidden w-full max-w-5xl relative">
-              <button 
-                onClick={closeModal} 
+              <button
+                onClick={closeModal}
                 className="absolute top-4 right-4 bg-white p-2 rounded-full z-50 shadow-lg hover:bg-gray-100 transition-colors"
               >
                 <X className="text-gray-600" />
@@ -183,21 +187,21 @@ const AllPosts = () => {
                 {/* Left side - Image Gallery */}
                 <div className="md:w-3/5 relative">
                   <div className="relative h-full">
-                    <img 
-                      src={selectedPost.img[currentImageIndex]} 
-                      alt={selectedPost.placeName} 
+                    <img
+                      src={selectedPost.img[currentImageIndex]}
+                      alt={selectedPost.placeName}
                       className="w-full h-full object-cover"
                     />
-                    
+
                     {/* Navigation buttons */}
-                    <button 
-                      onClick={prevImage} 
+                    <button
+                      onClick={prevImage}
                       className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-lg hover:bg-gray-100 transition-colors"
                     >
                       <ChevronLeft className="text-gray-600" />
                     </button>
-                    <button 
-                      onClick={nextImage} 
+                    <button
+                      onClick={nextImage}
                       className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-lg hover:bg-gray-100 transition-colors"
                     >
                       <ChevronRight className="text-gray-600" />
@@ -213,9 +217,9 @@ const AllPosts = () => {
                             className={`w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all
                               ${currentImageIndex === index ? 'border-white scale-105' : 'border-transparent opacity-70'}`}
                           >
-                            <img 
-                              src={img} 
-                              alt={`Thumbnail ${index + 1}`} 
+                            <img
+                              src={img}
+                              alt={`Thumbnail ${index + 1}`}
                               className="w-full h-full object-cover"
                             />
                           </button>
@@ -228,9 +232,10 @@ const AllPosts = () => {
                 {/* Right side - Content */}
                 <div className="md:w-2/5 p-6 overflow-y-auto">
                   <h2 className="font-bold text-2xl text-indigo-800 mb-4">{selectedPost.placeName}</h2>
+                  <h2 className="font-bold text-2xl text-indigo-800 mb-4">{selectedPost.userId}</h2>
                   <div className="prose max-w-none">
                     <div className="text-gray-700">{selectedPost.description}</div>
-                    
+
                     <div className="mt-6">
                       <h3 className="font-bold text-lg text-gray-800">Category</h3>
                       <p className="text-gray-600">{selectedPost.category}</p>
@@ -250,7 +255,7 @@ const AllPosts = () => {
                         <iframe
                           width="100%"
                           height="200"
-                          
+
                           style={{ border: 0 }}
                           src={`https://www.google.com/maps?q=${encodeURIComponent(selectedPost.placeName)}&output=embed`}
                           allowFullScreen

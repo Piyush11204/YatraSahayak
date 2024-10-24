@@ -5,6 +5,9 @@ export const UserContext = createContext({});
 
 export function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
+  const updateUsername = (newUsername) => {
+    setUser((prevUser) => ({ ...prevUser, username: newUsername }));
+  };
 
   // Fetch the current user on component mount
   useEffect(() => {

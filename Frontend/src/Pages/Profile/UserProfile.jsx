@@ -54,36 +54,14 @@ const UserProfile = () => {
     }
   };
 
-  const handleImageUpload = async (e) => {
-  const files = Array.from(e.target.files);
-  try {
-    // Map over each file and upload it to Cloudinary
-    const uploadPromises = files.map(async (file) => {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("YatraSahayak", "Trips/YatraSahayak"); // Replace with your Cloudinary upload preset
-
-      // Upload to Cloudinary
-      const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/dl16vvgyy/image/upload",
-        formData
-      );
-
-      return response.data.secure_url; // Get the uploaded image's URL
-    });
-
-    // Wait for all uploads to complete
-    const uploadedImageUrls = await Promise.all(uploadPromises);
-
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const imageUrls = files.map((file) => URL.createObjectURL(file));
     setNewPost((prevPost) => ({
       ...prevPost,
-      img: [...prevPost.img, ...uploadedImageUrls],
+      img: [...prevPost.img, ...imageUrls],
     }));
-  } catch (error) {
-    console.error("Error uploading images:", error);
-    alert("Image upload failed. Please try again.");
-  }
-};
+  };
 
   // const removeImage = (index) => {
   //   setNewPost((prevPost) => ({
