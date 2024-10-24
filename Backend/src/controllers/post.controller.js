@@ -4,67 +4,37 @@ import { v2 as cloudinary } from "cloudinary";
 
 const createPost = async (req, res) => {
     try {
-        // User authentication logic can be uncommented if needed
-        // if (!req.user) {
-        //     return res.status(401).json({ error: "User not authenticated" });
-        // }
-
-        const { text, placeName, location, bestSeasonToVisit, category } = req.body;
-        let { img } = req.body; // Expecting img to be an array of image URLs
-
-        // Uncomment if user authentication is required
-        // const userId = req.user._id;
-        // const user = await User.findById(userId);
-        // if (!user) return res.status(404).json({ message: "User not found" });
-
-        // Validate required fields
-        if (!placeName || !location || !bestSeasonToVisit || !category) {
-            return res.status(400).json({
-                error: "Place name, location, best season to visit, and category are required",
-            });
-        }
-
-        // Ensure there is text or at least one image
-        if (!text && !img) {
-            return res.status(400).json({ error: "Post must have text or an image" });
-        }
-
-        // Handle image uploads
-        if (img && Array.isArray(img)) {
-            // If img is an array, handle multiple uploads
-            const uploadPromises = img.map(async (image) => {
-                // Assuming the image is a URL; modify this line if images are file uploads
-                const uploadedResponse = await cloudinary.uploader.upload(image);
-                return uploadedResponse.secure_url; // Return the uploaded image URL
-            });
-            img = await Promise.all(uploadPromises); // Wait for all uploads to complete
-            console.log("Images uploaded successfully:", img);
-        } else if (img) {
-            // Handle single image if not an array
-            const uploadedResponse = await cloudinary.uploader.upload(img);
-            img = [uploadedResponse.secure_url]; // Wrap single image URL in an array
-            console.log("Image uploaded successfully:", img);
-        }
-
-        // Create a new post
-        const newPost = new Post({
-            // user: userId, // Uncomment if user association is needed
-            text,
-            img, // This will now be an array of image URLs
-            placeName,
-            location,
-            bestSeasonToVisit,
-            category,
+      const { text, placeName, location, bestSeasonToVisit, category, username, img } = req.body;
+  
+      if (!placeName || !location || !bestSeasonToVisit || !category || !username) {
+        return res.status(400).json({
+          error: "Place name, location, best season to visit, category, and username are required",
         });
-
-        // Save the post to the database
-        await newPost.save();
-        res.status(201).json(newPost);
+      }
+  
+      if (!text && (!img || img.length === 0)) {
+        return res.status(400).json({ error: "Post must have text or at least one image" });
+      }
+  
+      // Create a new post
+      const newPost = new Post({
+        text,
+        img,
+        placeName,
+        location,
+        bestSeasonToVisit,
+        category,
+        username,
+      });
+  
+      await newPost.save();
+      res.status(201).json(newPost);
     } catch (error) {
-        console.error("Error in createPost controller:", error);
-        res.status(500).json({ error: "Internal server error" });
+      console.error("Error in createPost controller:", error);
+      res.status(500).json({ error: "Internal server error" });
     }
-};
+  };
+  
 
 
 export default createPost;

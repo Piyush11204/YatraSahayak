@@ -30,7 +30,10 @@ const UserProfile = () => {
   const handlePost = async () => {
     console.log("Submitting post:", newPost);
     try {
-      const response = await axios.post("http://localhost:8000/posts/create", newPost, {
+      const response = await axios.post("http://localhost:8000/posts/create", {
+        ...newPost,
+        username: user.username, // Include the username from context
+      }, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -51,21 +54,43 @@ const UserProfile = () => {
     }
   };
 
-  const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
-    const imageUrls = files.map((file) => URL.createObjectURL(file));
-    setNewPost((prevPost) => ({
-      ...prevPost,
-      img: [...prevPost.img, ...imageUrls],
-    }));
-  };
+  const handleImageUpload = async (e) => {
+  const files = Array.from(e.target.files);
+  try {
+    // Map over each file and upload it to Cloudinary
+    const uploadPromises = files.map(async (file) => {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("YatraSahayak", "Trips/YatraSahayak"); // Replace with your Cloudinary upload preset
 
-  const removeImage = (index) => {
+      // Upload to Cloudinary
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/dl16vvgyy/image/upload",
+        formData
+      );
+
+      return response.data.secure_url; // Get the uploaded image's URL
+    });
+
+    // Wait for all uploads to complete
+    const uploadedImageUrls = await Promise.all(uploadPromises);
+
     setNewPost((prevPost) => ({
       ...prevPost,
-      img: prevPost.img.filter((_, i) => i !== index),
+      img: [...prevPost.img, ...uploadedImageUrls],
     }));
-  };
+  } catch (error) {
+    console.error("Error uploading images:", error);
+    alert("Image upload failed. Please try again.");
+  }
+};
+
+  // const removeImage = (index) => {
+  //   setNewPost((prevPost) => ({
+  //     ...prevPost,
+  //     img: prevPost.img.filter((_, i) => i !== index),
+  //   }));
+  // };
 
   const changeProfileImage = (e) => {
     const file = e.target.files[0];
@@ -84,7 +109,7 @@ const UserProfile = () => {
 
   // Extract username and profile image from user context
   const username = user ? user.username : "Guest"; // Fallback to "Guest" if user is not logged in
-  const userProfileImage = user ? user.profileImage : "/api/placeholder/150/150"; // Adjust to your API response structure
+  // const userProfileImage = user ? user.profileImage : "/api/placeholder/150/150"; // Adjust to your API response structure
 
   return (
     <div className="bg-gradient-to-b from-indigo-900 to-indigo-800 min-h-screen text-white">
