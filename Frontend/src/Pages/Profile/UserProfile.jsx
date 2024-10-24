@@ -78,11 +78,6 @@ const UserProfile = ({ initialUsername = "TravelLover123" }) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
             <div className="relative group">
-              <img
-                src={profileImage}
-                alt={username}
-                className="w-24 h-24 rounded-full border-2 border-white cursor-pointer transition-transform duration-300 transform group-hover:scale-110"
-              />
               {isEditing && (
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <label htmlFor="profile-upload" className="cursor-pointer">

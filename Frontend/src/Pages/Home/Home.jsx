@@ -46,11 +46,13 @@ const Home = () => {
   ];
 
   const achievements = [
-    "Best Travel Platform 2024",
-    "Trusted by 100+ Travel Agencies",
-    "Excellence in Travel Planning",
-    "Top Rated by Travelers",
+    "Curated Travel Destinations",
+    "Personalized Itinerary",
+    "User-Generated Content",
+    "Real-Time Recommendations",
     "Innovative Trip Planning",
+    "Best Travel Platform 2024",
+    "Seamless Trip Planning Tool",
   ];
 
   const categories = [
@@ -73,11 +75,11 @@ const Home = () => {
       {/* Hero Section */}
       <section className="relative h-screen bg-indigo-900 overflow-hidden">
         <div className="absolute inset-0 transition-opacity duration-1000">
-          <img
+          {/* <img
             src={heroImages[currentImageIndex]}
             alt="Hero background"
             className="w-full h-full object-cover opacity-40"
-          />
+          /> */}
         </div>
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-indigo-900/50" />
         <div className="relative z-10 h-full flex items-center justify-center">
@@ -98,12 +100,12 @@ const Home = () => {
               memories with Tripvana
             </p>
             <div className="flex justify-center gap-4">
-              <button className="bg-indigo-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-indigo-700 transition-colors duration-300 animate-pulse">
+              <button className="bg-purple-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-purple-700 transition-colors duration-300 animate-pulse">
                 Explore Destinations
               </button>
-              <button className="bg-white/10 backdrop-blur-sm text-white px-8 py-3 rounded-full font-semibold hover:bg-white/20 transition-colors duration-300">
+              {/* <button className="bg-white/10 backdrop-blur-sm text-white px-8 py-3 rounded-full font-semibold hover:bg-white/20 transition-colors duration-300">
                 View Deals
-              </button>
+              </button> */}
             </div>
           </motion.div>
         </div>
@@ -116,7 +118,7 @@ const Home = () => {
             {achievements.map((achievement, index) => (
               <div
                 key={index}
-                className="flex items-center space-x-2 text-indigo-300"
+                className="flex items-center space-x-2 text-purple-300"
               >
                 <CheckCircle className="w-5 h-5" />
                 <span className="text-lg font-semibold">{achievement}</span>
@@ -127,7 +129,7 @@ const Home = () => {
             {achievements.map((achievement, index) => (
               <div
                 key={index}
-                className="flex items-center space-x-2 text-indigo-300"
+                className="flex items-center space-x-2 text-purple-300"
               >
                 <CheckCircle className="w-5 h-5" />
                 <span className="text-lg font-semibold">{achievement}</span>
@@ -138,7 +140,7 @@ const Home = () => {
       </div>
 
       {/* Stats Section */}
-      <div className="py-20 bg-gradient-to-b from-indigo-900 to-indigo-800">
+      {/* <div className="py-20 bg-gradient-to-b from-indigo-900 to-indigo-800">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
@@ -158,7 +160,7 @@ const Home = () => {
             ))}
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* popular cities with season filter*/}
       <TravelShowcase />

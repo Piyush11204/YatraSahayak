@@ -26,12 +26,15 @@ function Signup() {
     const { fullname, email, username, password } = formData;
 
     try {
-      const res = await axios.post("http://localhost:8000/api/v1/users/register", {
-        fullname,
-        email,
-        username,
-        password,
-      });
+      const res = await axios.post(
+        "http://localhost:8000/api/v1/users/register",
+        {
+          fullname,
+          email,
+          username,
+          password,
+        }
+      );
       localStorage.setItem("accessToken", res.data);
       window.location = "/";
       toast.success("User registered successfully!");
@@ -62,17 +65,22 @@ function Signup() {
           <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
             <h1 className="text-4xl font-bold text-white mb-2">Welcome to</h1>
             <span className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-300">
-              Tripvana
+              YatraSahayak
             </span>
           </div>
         </div>
 
         {/* Right side - Form */}
         <div className="bg-gray-800 p-8 md:p-12 w-full md:w-96 flex flex-col justify-center">
-          <h2 className="text-3xl font-bold text-center mb-8 text-white">Sign Up</h2>
+          <h2 className="text-3xl font-bold text-center mb-8 text-white">
+            Sign Up
+          </h2>
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label htmlFor="fullname" className="block text-sm font-medium text-gray-300 mb-2">
+              <label
+                htmlFor="fullname"
+                className="block text-sm font-medium text-gray-300 mb-2"
+              >
                 Full Name
               </label>
               <input
@@ -88,7 +96,10 @@ function Signup() {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-300 mb-2"
+              >
                 Email
               </label>
               <input
@@ -104,7 +115,10 @@ function Signup() {
             </div>
 
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-300 mb-2">
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-gray-300 mb-2"
+              >
                 Username
               </label>
               <input
@@ -120,7 +134,10 @@ function Signup() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-300 mb-2"
+              >
                 Password
               </label>
               <input
@@ -146,7 +163,10 @@ function Signup() {
           <div className="mt-6 text-center">
             <p className="text-gray-400">
               Already have an account?{" "}
-              <Link to="/login" className="text-purple-400 hover:text-purple-300 font-medium">
+              <Link
+                to="/login"
+                className="text-purple-400 hover:text-purple-300 font-medium"
+              >
                 Login
               </Link>
             </p>

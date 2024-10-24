@@ -1,22 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import GoaImage from "../../images/goa.jpg";
+import RajasthanImage from "../../images/rajasthan.jpg";
+import HimalayasImage from "../../images/himalayas.jpg";
 
 const Carousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
     {
-      image: "/api/placeholder/1200/500",
+      image: RajasthanImage,
       title: "Explore Magical Rajasthan",
       description: "Experience the royal heritage and vibrant culture",
     },
     {
-      image: "/api/placeholder/1200/500",
+      image: GoaImage,
       title: "Serene Beaches of Goa",
       description: "Discover paradise on Earth's coastline",
     },
     {
-      image: "/api/placeholder/1200/500",
+      image: HimalayasImage,
       title: "Mystic Himalayas",
       description: "Adventure awaits in the mountains",
     },

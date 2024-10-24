@@ -61,16 +61,17 @@ function Navbar() {
       <nav className="px-4 lg:px-6 py-4">
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
           {/* Logo and Mobile Menu Button */}
-          <div className="flex items-center justify-between w-full lg:w-auto">
+          <div className="flex items-center justify-between w-full lg:w-auto text-white">
             <Link
               to="/"
-              className="flex items-center transition-transform duration-300 hover:scale-105"
+              className="flex items-center transition-transform duration-300 hover:scale-105 "
             >
-              <img
+              {/* <img
                 src="/api/placeholder/48/48"
                 className="mr-3 h-10"
                 alt="Logo"
-              />
+              /> */}
+              YatraSahayak
             </Link>
 
             {/* Mobile Menu Button */}
