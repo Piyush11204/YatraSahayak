@@ -52,7 +52,9 @@ const About = () => {
             className="text-center"
           >
             <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-300">
+
               Welcome To YatraSahayak
+
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               we are your trusted travel companion, dedicated to making
@@ -144,6 +146,7 @@ const About = () => {
                 Our Mission
               </h2>
               <p className="text-gray-300 mb-6">
+
                 At Yatra Sahayak, our mission is to simplify travel planning and
                 enhance your experiences. We strive to be your go-to platform
                 for discovering hidden gems, planning trips, and finding insider
@@ -156,6 +159,7 @@ const About = () => {
                   "Be your go-to platform for discovering hidden gems.",
                   "Provide insider tips and personalized trip planning",
                   "Promoting responsible and sustainable tourism",
+
                 ].map((item, index) => (
                   <motion.li
                     key={index}
@@ -178,7 +182,9 @@ const About = () => {
             >
               <div className="aspect-video rounded-xl overflow-hidden">
                 <iframe
+
                   src="https://www.google.com/maps?q=Tripvana&output=embed"
+
                   width="600"
                   height="450"
                   style={{ border: 0 }}
@@ -205,8 +211,10 @@ const About = () => {
               Ready to Explore the World?
             </h2>
             <p className="text-xl text-gray-300 mb-8">
+
               Join YatraSahayak today and embark on unforgettable journeys, one
               adventure at a time.
+
             </p>
             <button className="px-8 py-4 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition-all duration-300 transform hover:scale-105">
               Start Your Journey
