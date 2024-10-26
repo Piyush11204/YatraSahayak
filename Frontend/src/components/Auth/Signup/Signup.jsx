@@ -57,11 +57,11 @@ function Signup() {
         {/* Left side - Image */}
         <div className="relative w-96 hidden md:block">
           <div className="absolute inset-0 bg-purple-900/30 z-10" />
-          <img
+          {/* <img
             src="/api/placeholder/800/600"
             className="w-full h-full object-cover"
             alt="Welcome"
-          />
+          /> */}
           <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
             <h1 className="text-4xl font-bold text-white mb-2">Welcome to</h1>
             <span className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-300">

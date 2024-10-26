@@ -44,6 +44,10 @@ const userSchema = new Schema(
     refreshToken: {
       type: String,
     },
+    itenearyadd: {
+      type: String,
+      required:false
+    }
   },
   {
     timestamps: true,

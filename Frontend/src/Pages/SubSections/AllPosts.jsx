@@ -4,6 +4,7 @@ import { MapPin, Calendar, X, ChevronLeft, ChevronRight, Search } from "lucide-r
 import Itinerary from '../Itinerary/Itinerary';
 import useItineraryStore from '../Itinerary/ItineraryService';
 import { UserContext } from "../../../context/userContext";
+import toast from "react-hot-toast";
 
 const AllPosts = () => {
   const [posts, setPosts] = useState([]);
@@ -30,16 +31,16 @@ const AllPosts = () => {
 
     fetchPosts();
   }, []);
-
+  console.log(searchTerm)
   const seasons = [...new Set(posts.map(post => post.bestSeasonToVisit))];
   const filteredPosts = posts
     .filter(post => selectedSeason ? new RegExp(selectedSeason, "i").test(post.bestSeasonToVisit) : true)
     .filter(post =>
       searchTerm ?
         post.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.placeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.location.toLowerCase().includes(searchTerm.toLowerCase())
+        post.placeName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        post.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        post.location?.toLowerCase().includes(searchTerm.toLowerCase())
         : true
     );
 
@@ -49,6 +50,7 @@ const AllPosts = () => {
         ...post,
         addedAt: new Date().toISOString()
       });
+      toast.success("added to itenary")
     }
   };
 
