@@ -18,6 +18,7 @@ import Hotels from "./Pages/SubSections/Hotels.jsx";
 import ProfilePage from "./Pages/Profile/UserProfile.jsx";
 import AllPosts from "./Pages/SubSections/AllPosts.jsx";
 import Itinerary from "./Pages/Itinerary/Itinerary.jsx";
+import ItineraryPage from "./Pages/Itinerary/itineraryPage.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,10 +30,15 @@ const router = createBrowserRouter(
       <Route path="about" element={<About />} />
       <Route path="/allposts" element={<AllPosts  />} />
 
+
+      {/* <Route path='user/' element={<User />}>
+        <Route path=':userid' element={<User />} />
+      </Route> */}
       <Route path="programs/" />
       <Route path="login" element={<Login />} />
       <Route path="signup" element={<Signup />} />
       <Route path="Itinerary" element={<Itinerary />} />
+      <Route path="ItineraryPage" element={<ItineraryPage />} />
       <Route
         path="*"
         element={<h1 className="text-center text-3xl text-bold">Not Found</h1>}

@@ -296,7 +296,7 @@ const AllPosts = () => {
           </div>
         )}
 
-        {user && <Itinerary userId={user.id} />}
+        {/* {user && <Itinerary userId={user.id} />} */}
       </div>
     </div>
   );
