@@ -44,15 +44,24 @@ const AllPosts = () => {
         : true
     );
 
-  const handleAddToItinerary = (post) => {
-    if (user) {
-      addToItinerary(user.id, {
-        ...post,
-        addedAt: new Date().toISOString()
-      });
-      toast.success("added to itenary")
-    }
-  };
+    const handleAddToItinerary = async (post) => {
+      if (!user) {
+        toast.error("Please log in to add items to your itinerary.");
+        return;
+      }
+    
+      try {
+        await addToItinerary(user.id, {
+          ...post,
+          addedAt: new Date().toISOString(),
+        });
+        toast.success("Successfully added to itinerary!");
+      } catch (error) {
+        console.error("Error adding to itinerary:", error);
+        toast.error("Failed to add to itinerary. Please try again.");
+      }
+    };
+    
 
   const openModal = (post) => {
     setSelectedPost(post);

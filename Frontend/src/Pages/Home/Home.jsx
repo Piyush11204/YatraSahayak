@@ -16,7 +16,7 @@ import {
   Sun,
   Compass,
 } from "lucide-react";
-import AllPosts from "../SubSections/AllPosts";
+import ExploreDestinations from "../SubSections/ExploreDestinations";
 
 const Home = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -154,7 +154,8 @@ const Home = () => {
       </div> */}
 
       {/* popular cities with season filter*/}
-      <AllPosts />
+      {/* <AllPosts /> */}
+      <ExploreDestinations />
       {/* <TravelShowcase /> */}
 
       {/* Categories Section */}

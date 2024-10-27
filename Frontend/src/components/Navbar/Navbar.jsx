@@ -114,6 +114,19 @@ function Navbar() {
               {/* Profile Page */}
               <li className="relative group">
                 <NavLink
+                  to="/allposts"
+                  className={({ isActive }) =>
+                    `block py-2 px-3 transition-all duration-300 relative
+                    ${isActive ? "text-purple-400" : "text-gray-300"}
+                    hover:text-purple-400`
+                  }
+                >
+                  Locations
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-purple-400 transition-all duration-300 group-hover:w-full"></span>
+                </NavLink>
+              </li>
+              <li className="relative group">
+                <NavLink
                   to={`/profile`}
                   className={({ isActive }) =>
                     `block py-2 px-3 transition-all duration-300 relative
@@ -137,6 +150,19 @@ function Navbar() {
                   }
                 >
                   About Us
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-purple-400 transition-all duration-300 group-hover:w-full"></span>
+                </NavLink>
+              </li>
+              <li className="relative group">
+                <NavLink
+                  to="/itinerary"
+                  className={({ isActive }) =>
+                    `block py-2 px-3 transition-all duration-300 relative
+                    ${isActive ? "text-purple-400" : "text-gray-300"}
+                    hover:text-purple-400`
+                  }
+                >
+                  Itinerary
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-purple-400 transition-all duration-300 group-hover:w-full"></span>
                 </NavLink>
               </li>
