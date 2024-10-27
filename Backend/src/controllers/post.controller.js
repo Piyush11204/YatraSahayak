@@ -6,22 +6,29 @@ const createPost = async (req, res) => {
     try {
       const { text, placeName, location, bestSeasonToVisit, category } = req.body;
       let img = [];
-      if (req.files && req.files.img && req.files.img[0]) {
-        const imageFilePath = req.files.img[0].path;
-        const uploadResult = await uploadOnCloudinary(imageFilePath);
-        img = uploadResult.url;
+  
+      // Check if there are files to upload and iterate over them
+      if (req.files && req.files.img) {
+        const uploadPromises = req.files.img.map(async (file) => {
+          const uploadResult = await uploadOnCloudinary(file.path);
+          return uploadResult.url; // Store only the URL of the uploaded image
+        });
+  
+        img = await Promise.all(uploadPromises); // Wait for all uploads to complete
       }
   
+      // Validate required fields
       if (!placeName || !location || !bestSeasonToVisit || !category) {
         return res.status(400).json({
           error: "Place name, location, best season to visit, category, and username are required",
         });
       }
   
+      // Ensure there's text or at least one image
       if (!text && (!img || img.length === 0)) {
         return res.status(400).json({ error: "Post must have text or at least one image" });
-    }
-    
+      }
+  
       // Create a new post
       const newPost = new Post({
         text,
@@ -29,9 +36,8 @@ const createPost = async (req, res) => {
         location,
         bestSeasonToVisit,
         category,
-        img
+        img, // Store the array of image URLs
       });
-
   
       await newPost.save();
       res.status(201).json(newPost);
