@@ -1,12 +1,18 @@
 import Post from "../models/post.model.js";
 import {User} from "../models/user.model.js";
-import { v2 as cloudinary } from "cloudinary";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const createPost = async (req, res) => {
     try {
-      const { text, placeName, location, bestSeasonToVisit, category, username, img } = req.body;
+      const { text, placeName, location, bestSeasonToVisit, category } = req.body;
+      let img = [];
+      if (req.files && req.files.img && req.files.img[0]) {
+        const imageFilePath = req.files.img[0].path;
+        const uploadResult = await uploadOnCloudinary(imageFilePath);
+        img = uploadResult.url;
+      }
   
-      if (!placeName || !location || !bestSeasonToVisit || !category || !username) {
+      if (!placeName || !location || !bestSeasonToVisit || !category) {
         return res.status(400).json({
           error: "Place name, location, best season to visit, category, and username are required",
         });
@@ -14,18 +20,18 @@ const createPost = async (req, res) => {
   
       if (!text && (!img || img.length === 0)) {
         return res.status(400).json({ error: "Post must have text or at least one image" });
-      }
-  
+    }
+    
       // Create a new post
       const newPost = new Post({
         text,
-        img,
         placeName,
         location,
         bestSeasonToVisit,
         category,
-        username,
+        img
       });
+
   
       await newPost.save();
       res.status(201).json(newPost);
@@ -143,7 +149,6 @@ const getFollowingPosts = async (req, res) => {
 
 const getUserPosts = async (req, res) => {
     try {
-        const { username } = req.params;
 
         const user = await User.findOne({ username });
         if (!user) return res.status(404).json({ error: "User not found" });

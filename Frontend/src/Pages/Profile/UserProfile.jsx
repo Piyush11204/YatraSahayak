@@ -9,13 +9,13 @@ const UserProfile = () => {
     location: "",
     placeName: "",
     text: "",
-    img: [],
     category: "",
     bestSeasonToVisit: "",
   });
-  const [profileImage, setProfileImage] = useState("/api/placeholder/150/150");
-  const [isEditing, setIsEditing] = useState(false);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const { user } = useContext(UserContext);
+  
   const categories = [
     "Beach",
     "Waterfall",
@@ -28,208 +28,212 @@ const UserProfile = () => {
   const seasons = ["Spring", "Summer", "Autumn", "Winter", "Rainy"];
 
   const handlePost = async () => {
-    console.log("Submitting post:", newPost);
     try {
-      const response = await axios.post("http://localhost:8000/posts/create", {
-        ...newPost,
-        username: user.username, // Include the username from context
-      }, {
-        headers: {
-          "Content-Type": "application/json",
-        },
+      setIsLoading(true);
+
+      // Validate required fields
+      if (!newPost.placeName || !newPost.location || !newPost.bestSeasonToVisit || !newPost.category) {
+        alert("Please fill in all required fields: Place name, location, best season to visit, and category");
+        return;
+      }
+
+      // Validate that either text or image is present
+      if (!newPost.text && selectedImages.length === 0) {
+        alert("Post must have text or at least one image");
+        return;
+      }
+
+      // Create FormData for multipart form submission
+      const formData = new FormData();
+      formData.append("text", newPost.text);
+      formData.append("placeName", newPost.placeName);
+      formData.append("location", newPost.location);
+      formData.append("bestSeasonToVisit", newPost.bestSeasonToVisit);
+      formData.append("category", newPost.category);
+      
+      // Append multiple images
+      selectedImages.forEach((image, index) => {
+        formData.append(`img`, image);
       });
-      console.log("Post created successfully:", response.data);
-      setPosts([{ ...newPost, timestamp: new Date().toISOString() }, ...posts]);
+
+      const response = await axios.post(
+        "http://localhost:8000/posts/create",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      // Update local state with new post
+      setPosts([response.data, ...posts]);
+      
+      // Reset form
       setNewPost({
         location: "",
         placeName: "",
         text: "",
-        img: [],
         category: "",
         bestSeasonToVisit: "",
       });
+      setSelectedImages([]);
+
+      alert("Post created successfully!");
     } catch (error) {
       console.error("Error creating post:", error);
-      alert("There was an error creating the post. Please try again.");
+      alert(error.response?.data?.error || "Error creating post. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
-    const imageUrls = files.map((file) => URL.createObjectURL(file));
-    setNewPost((prevPost) => ({
-      ...prevPost,
-      img: [...prevPost.img, ...imageUrls],
-    }));
-  };
+    const validFiles = files.filter(file => {
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        alert(`Image ${file.name} is larger than 5MB and will be skipped`);
+        return false;
+      }
+      return true;
+    });
 
-  // const removeImage = (index) => {
-  //   setNewPost((prevPost) => ({
-  //     ...prevPost,
-  //     img: prevPost.img.filter((_, i) => i !== index),
-  //   }));
-  // };
-
-  const changeProfileImage = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setProfileImage(URL.createObjectURL(file));
+    // Limit to maximum 5 images
+    const totalImages = selectedImages.length + validFiles.length;
+    if (totalImages > 5) {
+      alert("Maximum 5 images allowed. Only the first " + (5 - selectedImages.length) + " images will be added.");
+      validFiles.splice(5 - selectedImages.length);
     }
+
+    setSelectedImages(prev => [...prev, ...validFiles]);
   };
 
-  const handleEditProfile = () => {
-    setIsEditing(true);
+  const removeImage = (index) => {
+    setSelectedImages(prev => prev.filter((_, i) => i !== index));
   };
-
-  const handleUpdateProfile = () => {
-    setIsEditing(false);
-  };
-
-  // Extract username and profile image from user context
-  const username = user ? user.username : "Guest"; // Fallback to "Guest" if user is not logged in
-  // const userProfileImage = user ? user.profileImage : "/api/placeholder/150/150"; // Adjust to your API response structure
 
   return (
     <div className="bg-gradient-to-b from-indigo-900 to-indigo-800 min-h-screen text-white">
-      <div className="relative p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="relative group">
-              {isEditing && (
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <label htmlFor="profile-upload" className="cursor-pointer">
-                    <Camera className="text-white w-6 h-6" />
-                  </label>
-                  <input
-                    id="profile-upload"
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={changeProfileImage}
-                  />
-                </div>
-              )}
-            </div>
-            {isEditing ? (
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)} // This doesn't change the username in UserContext
-                className="bg-transparent border-b-2 border-white text-white text-xl font-bold focus:outline-none"
-              />
-            ) : (
-              <h2 className="text-xl font-bold">{username}</h2>
-            )}
-          </div>
-          <button
-            className="bg-indigo-600 text-white px-4 py-2 rounded-full flex items-center hover:bg-indigo-700 transition duration-300"
-            onClick={isEditing ? handleUpdateProfile : handleEditProfile}
-          >
-            <Edit3 className="w-4 h-4 mr-2" />
-            {isEditing ? "Update Profile" : "Edit Profile"}
-          </button>
-        </div>
-      </div>
-
       <div className="max-w-4xl mx-auto pt-8 px-4">
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6 text-gray-800">
           <h3 className="text-2xl font-bold mb-4 text-center text-indigo-600">
             Create New Post
           </h3>
           <div className="space-y-4">
-            <input
-              type="text"
-              placeholder="Location"
-              value={newPost.location}
-              onChange={(e) =>
-                setNewPost({ ...newPost, location: e.target.value })
-              }
-              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-indigo-400"
-            />
-            <input
-              type="text"
-              placeholder="Place Name"
-              value={newPost.placeName}
-              onChange={(e) =>
-                setNewPost({ ...newPost, placeName: e.target.value })
-              }
-              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-indigo-400"
-            />
-            <textarea
-              placeholder="Text about the destination"
-              value={newPost.text}
-              onChange={(e) =>
-                setNewPost({ ...newPost, text: e.target.value })
-              }
-              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-indigo-400"
-            />
-            <label className="block">
-              <span className="sr-only">Choose photos</span>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Place Name *</label>
+              <input
+                type="text"
+                placeholder="Enter place name"
+                value={newPost.placeName}
+                onChange={(e) => setNewPost({ ...newPost, placeName: e.target.value })}
+                className="w-full p-2 border rounded-md focus:ring-2 focus:ring-indigo-400"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Location *</label>
+              <input
+                type="text"
+                placeholder="Enter location"
+                value={newPost.location}
+                onChange={(e) => setNewPost({ ...newPost, location: e.target.value })}
+                className="w-full p-2 border rounded-md focus:ring-2 focus:ring-indigo-400"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Description</label>
+              <textarea
+                placeholder="Share your experience about this place"
+                value={newPost.text}
+                onChange={(e) => setNewPost({ ...newPost, text: e.target.value })}
+                className="w-full p-2 border rounded-md focus:ring-2 focus:ring-indigo-400 min-h-[100px]"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">
+                Images (Max 5 images, each under 5MB)
+              </label>
               <input
                 type="file"
                 accept="image/*"
                 multiple
                 onChange={handleImageUpload}
                 className="block w-full text-sm text-gray-500
-                file:mr-4 file:py-2 file:px-4
-                file:rounded-full file:border-0
-                file:text-sm file:font-semibold
-                file:bg-indigo-50 file:text-indigo-700
-                hover:file:bg-indigo-100
-              "
+                  file:mr-4 file:py-2 file:px-4
+                  file:rounded-full file:border-0
+                  file:text-sm file:font-semibold
+                  file:bg-indigo-50 file:text-indigo-700
+                  hover:file:bg-indigo-100"
               />
-            </label>
-            <div className="flex flex-col gap-2">
-              {newPost.img.map((img, index) => (
-                <div key={index} className="relative flex flex-col items-start">
-                  <img
-                    src={img}
-                    alt={`Upload ${index + 1}`}
-                    className="w-full h-48 object-cover rounded-md"
-                  />
-                  <button
-                    onClick={() => removeImage(index)}
-                    className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
-              ))}
+              <div className="flex flex-wrap gap-4 mt-2">
+                {selectedImages.map((image, index) => (
+                  <div key={index} className="relative">
+                    <img
+                      src={URL.createObjectURL(image)}
+                      alt={`Upload ${index + 1}`}
+                      className="h-24 w-24 object-cover rounded-md"
+                    />
+                    <button
+                      onClick={() => removeImage(index)}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
-            <select
-              value={newPost.category}
-              onChange={(e) =>
-                setNewPost({ ...newPost, category: e.target.value })
-              }
-              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-indigo-400"
-            >
-              <option value="">Select Category</option>
-              {categories.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
-            <select
-              value={newPost.bestSeasonToVisit}
-              onChange={(e) =>
-                setNewPost({ ...newPost, bestSeasonToVisit: e.target.value })
-              }
-              className="w-full p-2 border rounded-md focus:ring-2 focus:ring-indigo-400"
-            >
-              <option value="">Best Season to Visit</option>
-              {seasons.map((season) => (
-                <option key={season} value={season}>
-                  {season}
-                </option>
-              ))}
-            </select>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Category *</label>
+              <select
+                value={newPost.category}
+                onChange={(e) => setNewPost({ ...newPost, category: e.target.value })}
+                className="w-full p-2 border rounded-md focus:ring-2 focus:ring-indigo-400"
+              >
+                <option value="">Select Category</option>
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Best Season to Visit *</label>
+              <select
+                value={newPost.bestSeasonToVisit}
+                onChange={(e) => setNewPost({ ...newPost, bestSeasonToVisit: e.target.value })}
+                className="w-full p-2 border rounded-md focus:ring-2 focus:ring-indigo-400"
+              >
+                <option value="">Select Season</option>
+                {seasons.map((season) => (
+                  <option key={season} value={season}>
+                    {season}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             <button
               onClick={handlePost}
-              className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white py-2 rounded-md hover:from-indigo-600 hover:to-purple-600 transition duration-300 flex items-center justify-center"
+              disabled={isLoading}
+              className={`w-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white py-2 rounded-md hover:from-indigo-600 hover:to-purple-600 transition duration-300 flex items-center justify-center ${
+                isLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
-              <Send className="w-4 h-4 mr-2" />
-              Post
+              {isLoading ? (
+                "Creating Post..."
+              ) : (
+                <>
+                  <Send className="w-4 h-4 mr-2" />
+                  Create Post
+                </>
+              )}
             </button>
           </div>
         </div>
