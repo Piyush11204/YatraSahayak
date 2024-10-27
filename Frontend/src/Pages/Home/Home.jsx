@@ -126,17 +126,7 @@ const Home = () => {
               </div>
             ))}
           </div>
-          <div className="absolute top-0 flex space-x-8 px-4 animate-marquee2">
-            {achievements.map((achievement, index) => (
-              <div
-                key={index}
-                className="flex items-center space-x-2 text-purple-300"
-              >
-                <CheckCircle className="w-5 h-5" />
-                <span className="text-lg font-semibold">{achievement}</span>
-              </div>
-            ))}
-          </div>
+         
         </div>
       </div>
             
