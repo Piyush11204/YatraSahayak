@@ -155,7 +155,7 @@ function Navbar() {
               </li>
               <li className="relative group">
                 <NavLink
-                  to="/itinerary"
+                  to="/itineraryPage"
                   className={({ isActive }) =>
                     `block py-2 px-3 transition-all duration-300 relative
                     ${isActive ? "text-purple-400" : "text-gray-300"}
