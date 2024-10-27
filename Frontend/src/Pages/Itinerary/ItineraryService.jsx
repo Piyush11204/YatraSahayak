@@ -1,22 +1,27 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 // Create a Zustand store
 const useItineraryStore = create(
   persist(
     (set, get) => ({
-      itineraries: {}, 
-      
+      itineraries: {},
+
       addToItinerary: (userId, item) => {
         const userItinerary = get().itineraries[userId] || [];
-        
+
         // Check if item already exists
-        if (!userItinerary.some(existingItem => existingItem._id === item._id)) {
-          set(state => ({
+        if (
+          !userItinerary.some((existingItem) => existingItem._id === item._id)
+        ) {
+          set((state) => ({
             itineraries: {
               ...state.itineraries,
-              [userId]: [...userItinerary, { ...item, addedAt: new Date().toISOString() }]
-            }
+              [userId]: [
+                ...userItinerary,
+                { ...item, addedAt: new Date().toISOString() },
+              ],
+            },
           }));
           return true;
         }
@@ -26,11 +31,11 @@ const useItineraryStore = create(
       // Remove item from a user's itinerary
       removeFromItinerary: (userId, itemId) => {
         const userItinerary = get().itineraries[userId] || [];
-        set(state => ({
+        set((state) => ({
           itineraries: {
             ...state.itineraries,
-            [userId]: userItinerary.filter(item => item._id !== itemId)
-          }
+            [userId]: userItinerary.filter((item) => item._id !== itemId),
+          },
         }));
       },
 
@@ -41,11 +46,11 @@ const useItineraryStore = create(
 
       // Clear a user's itinerary
       clearItinerary: (userId) => {
-        set(state => ({
+        set((state) => ({
           itineraries: {
             ...state.itineraries,
-            [userId]: []
-          }
+            [userId]: [],
+          },
         }));
       },
 
@@ -54,18 +59,18 @@ const useItineraryStore = create(
         const userItinerary = [...(get().itineraries[userId] || [])];
         const [removed] = userItinerary.splice(startIndex, 1);
         userItinerary.splice(endIndex, 0, removed);
-        
-        set(state => ({
+
+        set((state) => ({
           itineraries: {
             ...state.itineraries,
-            [userId]: userItinerary
-          }
+            [userId]: userItinerary,
+          },
         }));
-      }
+      },
     }),
     {
       name: (userId) => `travel-itineraries-${userId}`, // Unique localStorage key based on userId
-      version: 1
+      version: 1,
     }
   )
 );
