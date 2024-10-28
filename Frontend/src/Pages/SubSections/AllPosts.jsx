@@ -129,7 +129,9 @@ const AllPosts = () => {
             >
               <option value="">All Seasons</option>
               {seasons.map((season) => (
-                <option key={season} value={season}>{season}</option>
+                <option key={season} value={season}>
+                  {season}
+                </option>
               ))}
             </select>
             <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-300 pointer-events-none" />
@@ -138,7 +140,10 @@ const AllPosts = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredPosts.map((post) => (
-            <div key={post._id} className="bg-white/10 backdrop-blur-md rounded-xl overflow-hidden border border-white/20 transform hover:scale-[1.02] transition-all duration-300">
+            <div
+              key={post._id}
+              className="bg-white/10 backdrop-blur-md rounded-xl overflow-hidden border border-white/20 transform hover:scale-[1.02] transition-all duration-300"
+            >
               <div className="relative group">
                 <img
                   src={post.img[0]}
@@ -149,13 +154,17 @@ const AllPosts = () => {
               </div>
               <div className="p-6">
                 <h2 className="font-bold text-xl mb-2">{post.placeName}</h2>
-                <p className="text-gray-300 line-clamp-2 mb-4">{post.description}</p>
+                <p className="text-gray-300 line-clamp-2 mb-4">
+                  {post.description}
+                </p>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center text-gray-300">
                     <MapPin className="mr-1 h-4 w-4" />
                     <span className="text-sm">{post.location}</span>
                     <div className="flex items-center text-gray-300">
-                      <span className="text-sm">Posted by: {post.username}</span>
+                      <span className="text-sm">
+                        Posted by: {post.username}
+                      </span>
                     </div>
                     {/* <span className="text-sm">{post.username}</span> */}
                   </div>
@@ -226,7 +235,11 @@ const AllPosts = () => {
                             key={index}
                             onClick={() => setCurrentImageIndex(index)}
                             className={`w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden border-2 transition-all
-                              ${currentImageIndex === index ? 'border-white scale-105' : 'border-transparent opacity-70'}`}
+                              ${
+                                currentImageIndex === index
+                                  ? "border-white scale-105"
+                                  : "border-transparent opacity-70"
+                              }`}
                           >
                             <img
                               src={img}
@@ -242,18 +255,29 @@ const AllPosts = () => {
 
                 {/* Right side - Content */}
                 <div className="md:w-2/5 p-6 overflow-y-auto">
-                  <h2 className="font-bold text-2xl text-indigo-800 mb-4">{selectedPost.placeName}</h2>
-                  <h2 className="font-bold text-2xl text-indigo-800 mb-4">{selectedPost.userId}</h2>
+                  <h2 className="font-bold text-2xl text-indigo-800 mb-4">
+                    {selectedPost.placeName}
+                  </h2>
+                  <h2 className="font-bold text-2xl text-indigo-800 mb-4">
+                    {selectedPost.userId}
+                  </h2>
                   <div className="prose max-w-none">
-                    <div className="text-gray-700">{selectedPost.description}</div>
+                    <h3 className="font-bold text-lg text-gray-800">
+                      Description
+                    </h3>
+                    <div className="text-gray-700">{selectedPost.text}</div>
 
                     <div className="mt-6">
-                      <h3 className="font-bold text-lg text-gray-800">Category</h3>
+                      <h3 className="font-bold text-lg text-gray-800">
+                        Category
+                      </h3>
                       <p className="text-gray-600">{selectedPost.category}</p>
                     </div>
 
                     <div className="mt-6">
-                      <h3 className="font-bold text-lg text-gray-800">Location</h3>
+                      <h3 className="font-bold text-lg text-gray-800">
+                        Location
+                      </h3>
                       <div className="flex items-center text-gray-600">
                         <MapPin className="mr-2" />
                         <span>{selectedPost.location}</span>
@@ -266,16 +290,19 @@ const AllPosts = () => {
                         <iframe
                           width="100%"
                           height="200"
-
                           style={{ border: 0 }}
-                          src={`https://www.google.com/maps?q=${encodeURIComponent(selectedPost.placeName)}&output=embed`}
+                          src={`https://www.google.com/maps?q=${encodeURIComponent(
+                            selectedPost.placeName
+                          )}&output=embed`}
                           allowFullScreen
                         />
                       </div>
                     </div>
 
                     <div className="mt-6">
-                      <h3 className="font-bold text-lg text-gray-800">Best Time to Visit</h3>
+                      <h3 className="font-bold text-lg text-gray-800">
+                        Best Time to Visit
+                      </h3>
                       <div className="flex items-center text-gray-600">
                         <Calendar className="mr-2" />
                         <span>{selectedPost.bestSeasonToVisit}</span>
